@@ -184,7 +184,7 @@ while True:
                 
         DISPLAYSURF.blit(textSurfaceObj,textRectObj)
         DISPLAYSURF.blit(textSurfaceObj1,textRectObj1)
-        if ( (coords[j][0][0]<= mousex <=coords[j][1][0]) and (coords[j][0][1]-30 <= mousey <= coords[j][0][1]-10)):
+        if ( (coords[j][0][0]<= mousex <=coords[j][1][0]) and (coords[j][0][1]-30 <= mousey <= coords[j][0][1])):
             play_end_animation()
             click = False
             while 1 and restart == False:
