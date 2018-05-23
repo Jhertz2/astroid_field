@@ -1,11 +1,9 @@
 import random, pygame, sys
 from random import *
 from pygame.locals import *
+import time
 
 def play_end_animation():
-    DISPLAYSURF.blit(boom, (mousex-20, mousey))
-    pygame.display.update()
-    pygame.time.wait(500)
     for i in range(4):
         DISPLAYSURF.fill(WHITE)
         pygame.display.update()
@@ -21,7 +19,10 @@ def play_end_animation():
     DISPLAYSURF.blit(textSurfaceObj,textRectObj)
     
 
-def play_start_animation():
+def play_start_animation(filename, restart):
+    if restart == True:
+        pygame.mixer.music.load(filename)
+        pygame.mixer.music.play(-1)
     DISPLAYSURF.fill(BLACK)
     pygame.display.update()
     DISPLAYSURF.blit(three, (250,200))
@@ -36,8 +37,8 @@ def play_start_animation():
     pygame.display.update()
     pygame.time.wait(1000)
 
-    
 
+    
 
 FPS = 30
 WINDOWWIDTH = 800
@@ -52,6 +53,9 @@ YELLOW = (255, 255, 0)
 highscore = 0
 
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load('Space_Music.mp3')
+pygame.mixer.music.play(-1)
 FPSCLOCK = pygame.time.Clock()
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 three = pygame.image.load('3.jpg')
@@ -92,6 +96,7 @@ textRectObj2 = textSurfaceObj2.get_rect()
 textRectObj2.center = (400,360)
 DISPLAYSURF.blit(textSurfaceObj2,textRectObj2)
 
+
 # Game starts here
 
 pygame.display.update()
@@ -112,9 +117,9 @@ mousex = 400
 mousey = 550
 j = 0
 
-play_start_animation()
 
-start_time = pygame.time.get_ticks() 
+play_start_animation('Space_Music.mp3', restart)
+start_time = pygame.time.get_ticks()
 while True:
 
     if restart == True:
@@ -124,7 +129,7 @@ while True:
         click = False
         restart = False
         start_time = pygame.time.get_ticks()
-        pygame.display.update()
+        
     
     DISPLAYSURF.fill(BLACK)
     DISPLAYSURF.blit(mouse, (mousex-20, mousey))
@@ -185,6 +190,14 @@ while True:
         DISPLAYSURF.blit(textSurfaceObj,textRectObj)
         DISPLAYSURF.blit(textSurfaceObj1,textRectObj1)
         if ( (coords[j][0][0]<= mousex <=coords[j][1][0]) and (coords[j][0][1]-30 <= mousey <= coords[j][0][1])):
+            pygame.mixer.music.stop()
+            DISPLAYSURF.blit(boom, (mousex-20, mousey))
+            pygame.mixer.music.load('explode1.mp3')
+            pygame.mixer.music.play(-1)
+            pygame.display.update()
+            time.sleep(1.5) # wait and let the sound play for 1 second
+            pygame.mixer.music.stop()
+            
             play_end_animation()
             click = False
             while 1 and restart == False:
@@ -224,7 +237,7 @@ while True:
                     if click == True:
                         restart = True
                         highscore = counting_time
-                        play_start_animation()
+                        play_start_animation('Space_Music.mp3', restart)
                         start_time = 0
                         break
                     
